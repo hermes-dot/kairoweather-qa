@@ -1,7 +1,7 @@
 r"""读取和风天气 daily JSON，在终端打印温度简报（第一版）。
 
-用法：
-    py -3.14 weather_report.py --file ..\data\fixtures\daily_ok.json
+用法（在仓库根目录执行）：
+    uv run python tools/weather_report.py --file data/fixtures/daily_ok.json
 
 这一版只有一个 build_report：既算数，又拼字符串。
 第二版（weather_report_v2.py）会把它拆成 analyze + render，并加柱状图。

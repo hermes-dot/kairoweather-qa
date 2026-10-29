@@ -1,7 +1,7 @@
 r"""天气温度简报 · 第二版（加柱状图，并把「计算」和「渲染」拆开）。
 
-用法：
-    py -3.14 weather_report_v2.py --file ..\data\fixtures\daily_ok.json
+用法（在仓库根目录执行）：
+    uv run python tools/weather_report_v2.py --file data/fixtures/daily_ok.json
 
 和第一版的结构差异只有一处：
     第一版：build_report 既算数又拼字符串
