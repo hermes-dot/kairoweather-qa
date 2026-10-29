@@ -1,0 +1,27 @@
+# 虚拟环境：不入库（体积大、可用 pyproject.toml 复现）
+.venv/
+# Python 字节码与 pytest 缓存
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# week1 练习用例的临时目录（正常机器上看不到；受限环境/中断时可能残留）
+tmp_tests/
+.pytest-tmp/
+tmp_pytest/
+pytest-cache-files-*/
+# 临时排查 Windows 文件权限时生成的报告与回滚脚本，不属于项目
+.acl-repair/
+# 报告产物：每次跑都能重新生成，不入库
+reports/
+allure-results/
+htmlcov/
+.coverage
+coverage.xml
+junit.xml
+.ruff_cache/
+# uv 在本机受限环境里使用的工程内缓存（正常机器用全局缓存，不会生成）
+.uv-cache/
+# IDE 配置（含本机路径与窗口布局，每次开 IDE 都变，提交进去只会污染 diff）
+.idea/
+# live 用例的密钥（只走环境变量，永不入库）
+.env

@@ -1,0 +1,76 @@
+# KairoWeather 接口自动化工程（W1）
+#
+# 为什么用 pyproject.toml 而不是 pytest.ini：
+#   pytest 9 起官方推荐把配置写进 [tool.pytest.ini_options]，
+#   好处是「依赖清单」和「测试配置」在同一个文件里——不用在两个文件之间来回对照。
+[project]
+name = "kairoweather-qa"
+version = "0.2.0"
+description = "KairoWeather 的接口契约、异常场景与 CLI 自动化测试工程"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "yuzheng" }]
+keywords = ["pytest", "api-testing", "qweather", "contract-testing"]
+# 为什么卡在上限 3.14：allure-pytest 目前只声明支持到 3.13。
+# 本机已有 uv 托管的 CPython 3.12.13，用它是零成本选择。详见 README。
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "pytest>=9.1",
+    "requests>=2.34",
+]
+
+[tool.pytest.ini_options]
+# 只在这些目录里找用例：避免把 mock/ 或 data/ 里的文件误当成测试模块收集
+testpaths = ["tests"]
+# 把 qa/ 自己加进 sys.path，于是 tests/ 里可以直接 `from api.client import WeatherClient`，
+# 不用安装成包、也不用手写 sys.path.append（那种写法在 CI 上最容易翻车）
+pythonpath = ["."]
+# 用 TOML 的字面量字符串（单引号）写，里面的双引号就不会被转义处理
+addopts = '-m "not live" --strict-markers --strict-config -ra'
+#          ↑ 默认排除打真接口的用例    ↑ 未注册的 marker 直接报错
+#                                     ↑ 配置项写错就报错（默认只警告，会静默失效）
+#                                                              ↑ 结尾多打一行"哪些被跳过/为什么"
+markers = [
+    "live: 打真实和风接口的用例（默认不跑：会烧日配额、受网络与限流影响、结果不稳定）",
+]
+
+[dependency-groups]
+dev = [
+    "allure-pytest>=2.15",
+    "pytest-cov>=7.0",
+    "ruff>=0.14",
+]
+
+# 覆盖率只统计「被测代码 / 测试基建」，不把 tests/ 自己算进去。
+# 门槛先按实测值定，避免一上来写 90% 导致 CI 天天红。
+[tool.coverage.run]
+source = ["api", "assertions", "mock", "tools"]
+branch = true
+relative_files = true
+# weather_report.py 是 W2 的「重构前」对照版（只用于说明 v1/v2 差异），
+# 没有独立用例；把它算进覆盖率只会制造一个永远 0% 的假缺口。
+omit = ["tools/weather_report.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 90
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [".venv", "tmp_tests", "allure-results", "htmlcov"]
+
+[tool.ruff.lint]
+# 只启用「能抓到真实问题」的规则集：语法/未使用导入/导入顺序/旧语法/常见 bug。
+# 不启用格式化规则，避免把教学注释和现有代码风格一次性翻掉。
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["api", "assertions", "mock", "tools"]

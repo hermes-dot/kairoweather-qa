@@ -1,0 +1,33 @@
+{
+  "code": "200",
+  "location": [
+    {
+      "name": "北京市",
+      "id": "101010100",
+      "lat": "39.90499",
+      "lon": "116.40529",
+      "adm2": "北京",
+      "adm1": "北京市",
+      "country": "中国",
+      "tz": "Asia/Shanghai",
+      "utcOffset": "+08:00",
+      "isDst": "0",
+      "type": "city",
+      "rank": "10"
+    },
+    {
+      "name": "朝阳区",
+      "id": "101010300",
+      "lat": "39.92149",
+      "lon": "116.48684",
+      "adm2": "北京",
+      "adm1": "北京市",
+      "country": "中国",
+      "tz": "Asia/Shanghai",
+      "utcOffset": "+08:00",
+      "isDst": "0",
+      "type": "district",
+      "rank": "45"
+    }
+  ]
+}
