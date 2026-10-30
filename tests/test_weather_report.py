@@ -160,6 +160,23 @@ def test_to_float_rejects_dirty_data_with_context(raw: object) -> None:
     assert repr(raw) in message, "原始值没进提示，排障时不知道坏成了什么样"
 
 
+@pytest.mark.parametrize("raw", ["nan", "inf", "-inf"], ids=["NaN", "Inf", "-Inf"])
+@allure.epic("KairoWeather 测试工程")
+@allure.feature("天气简报 CLI")
+@allure.story("非有限数字")
+def test_to_float_rejects_non_finite(raw: str) -> None:
+    """NaN/Inf 能被 float() 接受，但不是合法温度；必须在这里拦下。
+
+    如果漏到 render，round(nan) 才会抛 ValueError，报错会离现场很远。
+    """
+    with pytest.raises(SystemExit) as excinfo:
+        report.to_float(raw, "tempMax", 0)
+
+    message = str(excinfo.value)
+    assert "不是有限数字" in message
+    assert repr(raw) in message
+
+
 # ------------------------------------------------------------------ analyze
 @allure.epic("KairoWeather 测试工程")
 @allure.feature("天气简报 CLI")

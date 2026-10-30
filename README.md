@@ -49,12 +49,11 @@ Windows 上如果不想用 uv，也可以直接调用已建好的虚拟环境：
 |---|---|---:|---|
 | 冒烟 | `tests/test_smoke.py` | 5 | 5 个端点在顺风局下是否都返回 App 依赖的字段与类型 |
 | 异常场景 | `tests/test_scenarios.py` | 16 | 超时、500、脏 JSON、403 下线、204 无数据时，客户端是否原样暴露 |
-| 契约 | `tests/test_contract_practice.py` | 9 | 5 个端点的字段存在性/类型/可空性是否稳定；daily 5 档是否都覆盖 |
-| CLI 工具 | `tests/test_weather_report.py` | 19 | 本地天气简报的读取、计算、渲染与错误退出是否可回归 |
-| 接管练习 | `tests/test_first_practice.py`、`test_my_practice.py`、`test_api_practice.py` | 10 | 学习阶段亲手补的用例，保留作过程记录 |
+| 契约 | `tests/test_contracts.py` | 9 | 5 个端点的字段存在性/类型/可空性是否稳定；daily 5 档是否都覆盖 |
+| CLI 工具 | `tests/test_weather_report.py` | 22 | 本地天气简报的读取、计算、渲染与错误退出是否可回归；含 NaN/Inf 回归 |
 | 真实接口 | `tests/test_live.py` | 5 | 上游契约是否仍然成立；默认被 `-m "not live"` 排除 |
 
-当前默认档 **59 passed**；另加 5 条 live（无 Key 时 skip）。覆盖率只统计被测代码/测试基建，
+当前默认档 **52 passed**；另加 5 条 live（无 Key 时 skip）。覆盖率只统计被测代码/测试基建，
 当前约 **93%**（`fail_under = 90`）。
 
 ## 关键设计
